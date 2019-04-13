@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <title>Document</title>
+
+        <script src="lib/vue.js"></script>
+
+        <style>
+            [v-cloak]{
+                display: none;
+            }
+        </style>
+    </head>
+
+    <body>
+        <div id="app">
+            <!-- v-cloak是一个指令能够解决插值表达式因加载速度问题而闪烁的问题 -->
+            <p v-cloak>{{ msg }}</p> 
+
+            <!-- v-text和插值表达式的作用相似 -->
+            <h4 v-text="msg"></h4>
+
+            <!-- 默认 v-text 指令不会存在闪烁问题 -->
+            <!-- 插值表达式可以在标签中加上任意内容而不会被覆盖，即只会替换这个占位符中的内容；v-text 会覆盖元素中原有的内容 -->
+            <div>_______{{msg}}------------</div>
+            <div v-text="msg">+++++++++++++</div>
+
+            <!-- v-html 指令可以将内容解析成 html 格式输出到页面上 -->
+            <div v-html="msg2"></div>
+
+            <!-- v-bind 指令是用来提供属性绑定的指令 -->
+            <!-- v-bind 指令会将引号中的内容解析为 JS表达式 -->
+            <input type="button" value="按钮" title="mytitle">
+
+            <input type="button" value="按钮" v-bind:title="mytitle + '123'">
+            <input type="button" value="按钮" :title="mytitle + '123'"> <!-- 简写形式 -->
+
+            <br><br>
+
+            <!-- v-on : 事件绑定机制 -->
+            <input type="button" value="按钮" :title="mytitle2" v-on:click="show">
+            <input type="button" value="按钮" :title="mytitle2" @click="show"><!-- 简写形式 -->
+
+            <input type="button" value="按钮" :title="mytitle2" v-on:mouseover="show">
+
+
+
+        </div>
+
+        <script>
+            var vm = new Vue({
+                el: '#app',
+                data: {
+                    msg: '12345',
+                    msg2: '<h1>suousouosuosusousosuosus</h1>',
+                    mytitle: '这是一个自定义的标题',
+                    mytitle2: '点击弹框'
+                },
+                methods: { //这个 methods 属性里定义了当前 Vue 实例所有可用的方法
+                    show: function(){
+                        alert('hello!')
+                    }
+                }
+            })
+
+            // 使用 DOM 操作
+            // document.getElementById("btn").onclick = function(){
+            //     alert("hello");
+            // }
+        </script>
+    </body>
+</html>
