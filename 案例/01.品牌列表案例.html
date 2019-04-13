@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="./lib/vue.js"></script>
+    <link rel="stylesheet" href="./lib/bootstrap-3.3.7-dist/css/bootstrap.css">
+</head>
+
+<body>
+    <div id="app">
+
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <h3 class="panel-title">添加</h3>
+            </div>
+            <div class="panel-body form-inline">
+                <div>
+                    <label>Id: <input type="text" class="form-control" v-model="id"></label>
+                    <label>Name: <input type="text" class="form-control" v-model="name"></label>
+
+                    <input type="button" class="btn btn-primary" value="添加" @click="add">
+                    <br>
+                    <input type="text" v-model="keywords">
+                    <input type="button" value="搜索" @click="search(this.keywords)">
+                </div>
+            </div>
+        </div>
+
+
+        <table class="table table-bordered table-striped table-hover">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>名称</th>
+                    <th>创建时间</th>
+                    <th>操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr v-for="item in list" :key="item.Id">
+                    <td>{{ item.id }}</td>
+                    <!-- <td>{{ item.Name }}</td> -->
+                    <td v-text="item.name"></td>
+                    <td>{{ item.ctime }}</td>
+                    <!-- 在 vue 中，使用事件绑定机制，为元素指定处理函数的时候，如果加上了()，就可以给函数传参数了 -->
+                    <td><a href="" @click.prevent="del(item.id)">删除</a></td>
+                </tr>
+            </tbody>
+        </table>
+
+    </div>
+    <script>
+        var vm = new Vue({
+            el: '#app',
+            data: {
+                id: '',
+                name: '',
+                keywords: '',
+                list: [
+                    { id: 1, name: '奔驰', ctime: new Date() },
+                    { id: 2, name: '宝马', ctime: new Date() }
+                ]
+            },
+            methods: {
+                add() {
+                    // alert('111')
+                    var newCar = { id: this.id, name: this.name, ctime: new Date() }
+                    this.list.push(newCar)
+                    this.id = this.name = ''
+                },
+                del(id) {
+                    // alert('111')
+
+                    // this.list.pop(id)
+
+                    // this.list.some((item, i) => {
+                    //     if (item.id == id) {
+                    //         this.list.splice(i, 1)
+                    //         // 在数组的 some() 方法中，如果返回 true， 则会终止后续循环
+                    //         return true
+                    //     }
+                    // })
+
+                    var index = this.list.findIndex(item => {
+                        if (item.id == id) {
+                            return true
+                        }
+                    })
+
+                    // console.log(index)
+
+                    this.list.splice(index, 1)
+                },
+                search(keywords){
+                    
+                }
+            },
+        })
+    </script>
+</body>
+
+</html>

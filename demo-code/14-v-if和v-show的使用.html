@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="lib/vue.js"></script>
+</head>
+
+<body>
+    <div id="app">
+        <!-- <input type="button" value="点击切换显示标题" @click="isShow"> -->
+        <input type="button" value="点击切换显示标题" @click="flag = !flag"> <!-- 如果只有一句的函数可以将函数写到标签中 -->
+
+        <!-- v-if 的特点：每次都会对元素进行删除或者添加操作 -->
+        <!-- v-show 的特点：每次不会都 DOM 进行删除或者添加操作，只会改变 display：none 的样式 -->
+        <!-- v-if 有较高的切换性能消耗 -->
+        <!-- v-show 有较高的页面渲染消耗 -->
+        <!-- 如果元素的显示与否被频繁改变，则推荐使用 v-show -->
+        <h1 v-if="flag">这是一个标题</h1>
+        <h1 v-show="flag">这是一个标题</h1>
+        
+    </div>
+    <script>
+        var vm = new Vue({
+            el: '#app',
+            data: {
+                flag: true,
+            },
+            methods: {
+                isShow() {
+                    // if(this.flag){
+                    //     this.flag = false
+                    // }
+                    // else{
+                    //     this.flag = true;
+                    // }
+                    this.flag = !this.flag
+                    
+                }
+            },
+        })
+    </script>
+</body>
+
+</html>
