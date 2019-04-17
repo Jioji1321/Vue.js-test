@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="lib/vue.js"></script>
+    <script src="lib/vue-resource-v1.5.1.js"></script>
+    <style>
+        .selected{
+            background-color: gray
+        }
+    </style>
+</head>
+
+<body>
+    <div id="app">
+        <input type="text" v-model="keyword" @keyup="getData($event)" @keydown.down="changeDown"
+            @keydown.up.prevent="changeUp">
+        <ul>
+            <li v-for="(value, index) in ret" :class="{selected: index == now}">
+                {{ value }}
+            </li>
+        </ul>
+    </div>
+    <script>
+        var vm = new Vue({
+            el: '#app',
+            data: {
+                keyword: '',
+                displayword: '',
+                ret: [],
+                now: -1
+            },
+            methods: {
+                getData(e) {
+                    if (e.keyCode == 38 || e.keyCode == 40) {
+                        // 当操作上下方向键的时候，不调用函数
+                        return
+                    }
+
+                    this.$http.jsonp(
+                        'https://sug.so.360.cn/suggest',
+                        {
+                            params: {
+                                word: this.keyword,
+                                // 处理中文字段乱码 https://www.cnblogs.com/wf-skylark/p/9215327.html
+                                encodein: 'utf-8',
+                                encodeout: 'utf-8'
+                            }
+                        }).then(response => {
+                            // console.log(response.data.s)
+                            this.ret = response.data.s
+                            this.displayword = this.keyword
+                            console.log(this.displayword)
+                        }).catch(error => {
+                            alert('获取失败')
+                        })
+                },
+
+                changeDown() {
+                    this.now++
+                    this.keyword = this.ret[this.now]
+                    if (this.now == this.ret.length) {
+                        this.keyword = this.displayword
+                        this.now = -1
+                    }
+                },
+
+                changeUp() {
+                    this.now--
+                    this.keyword = this.ret[this.now]
+                    if (this.now == -1) {
+                        this.keyword = this.displayword
+                        this.now = this.ret.length
+                    }
+                }
+            }
+        })
+    </script>
+</body>
+
+</html>

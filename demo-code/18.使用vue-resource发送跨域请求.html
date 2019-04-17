@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="lib/vue.js"></script>
+    <script src="./lib/vue-resource-v1.5.1.js"></script>
+</head>
+
+<body>
+    <div id="app">
+        <input type="text" v-model="word">
+        <input type="button" value="发送 JSONP 跨域请求" @click="sendJSONP">
+        <br>
+        {{ ret }}
+    </div>
+    <script>
+        var vm = new Vue({
+            el: '#app',
+            data: {
+                word: '',
+                ret: ''
+            },
+            methods: {
+                sendJSONP() {
+                    this.$http.jsonp(
+                        // https://sug.so.360.cn/suggest?callback=suggest_so&encodein=utf-8&encodeout=utf-8&format=json&fields=word&word=aaa
+                        // https://sug.so.360.cn/suggest?word=2222&encodeing=utf-8&format=json&callback=_jsonprqte68cvahl
+                        'https://sug.so.360.cn/suggest',
+                        {
+                            params: {
+                                word: this.word,
+                                encodeing: 'utf-8',
+                                format: 'json'
+
+                            },
+                            // header: {
+                            //     ContentType: 'charset=UTF-8'
+                            // }
+                        }).then(response => {
+                            // console.log(response.data.s)
+                            this.ret = response.data.s
+                        }).catch(error => {
+                            alert('获取失败')
+                        }
+                    )
+                }
+            },
+        })
+    </script>
+</body>
+
+</html>

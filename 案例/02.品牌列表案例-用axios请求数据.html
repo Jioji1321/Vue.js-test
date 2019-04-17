@@ -8,6 +8,8 @@
     <title>品牌列表案例</title>
     <script src="./lib/vue.js"></script>
     <script src="./lib/axios.js"></script>
+    <script src="./lib/vue-resource-v1.5.1.js"></script>
+    <script src="./lib/jquery-3.3.1.js"></script>
     <link rel="stylesheet" href="./lib/bootstrap-3.3.7-dist/css/bootstrap.css">
 </head>
 
@@ -226,15 +228,41 @@
                     })
                 },
                 getData() {
-                    axios.get(
-                        '../data/user.json',
-                        // 'http://localhost:9090/findAll',
-                    ).then(response => {
-                        // console.log(response.data)
-                        this.list = response.data
-                    }).catch(error => {
-                        alert('请求数据出错！')
-                    })
+                    // 这么写提示跨域请求出错，需要跨域
+                    // axios.get(
+                    //     // '../data/user.json',
+                    //     'http://localhost:9090/findAll',
+                    // ).then(response => {
+                    //     // console.log(response.data)
+                    //     this.list = response.data
+                    // }).catch(error => {
+                    //     alert('请求数据出错！')
+                    // })
+
+                    // 使用 vue-resource 发送 JSONP 跨域请求
+                    // 这么写好像也不行，应该是 url 的问题
+                    // this.$http.jsonp(
+                    //     'http://localhost:9090/findAll'
+                    //     ).then(response => {
+                    //     // console.log(response.data)
+                    //     this.list = response.data
+                    // })
+                    // .catch(error => {
+                    //     alert('请求数据出错！')
+                    // })
+
+                    // 使用jquery的 ajax 发送试一下？
+                    // $.ajax({
+                    //     type: 'get',
+                    //     url: 'http://localhost:9090/findAll',
+                    //     dataType: 'jsonp',
+                    //     jsonp: 'callback',
+                    //     success: function(data){
+                    //         console.log(data)
+                    //     }
+                    // })
+
+                    
                 }
             },
         })
